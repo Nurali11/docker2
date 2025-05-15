@@ -1,0 +1,42 @@
+generator client {
+  provider = "prisma-client-js"
+  binaryTargets = ["native", "linux-musl-openssl-3.0.x"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum RoleStatus {
+  ADMIN
+  USER
+}
+
+model User {
+  id           String     @id @default(uuid())
+  name         String
+  password     String
+  email        String     @unique
+  role         RoleStatus @default(USER)
+  isVerified   Boolean    @default(false)
+  createdAt    DateTime   @default(now())
+}
+
+model Book {
+  id        String   @id @default(uuid())
+  name      String
+  about     String
+  price     Int
+  Author    Author?  @relation(fields: [authorId], references: [id])
+  authorId  String?
+  createdAt DateTime @default(now())
+}
+
+model Author {
+  id        String   @id @default(uuid())
+  name      String
+  age       Int
+  books     Book[]
+  createdAt DateTime @default(now())
+}

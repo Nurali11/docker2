@@ -1,0 +1,28 @@
+services:
+  postgres:
+    image: postgres:17
+    container_name: nestjs_postgres
+    restart: always
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: mydb
+    ports:
+      - '5432:5432'
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  app:
+    build: .
+    container_name: nestjs_app
+    restart: always
+    depends_on:
+      - postgres
+    ports:
+      - '3000:3000'
+    environment:
+      DATABASE_URL: 'postgresql://user:password@postgres:5432/mydb'
+    command: ['npm', 'run', 'start:migrate:prod']
+
+volumes:
+  pgdata:
