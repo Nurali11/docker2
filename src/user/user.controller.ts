@@ -39,13 +39,6 @@ export class UserController {
     return this.userService.login(dto);
   }
 
-
-  @UseGuards(AuthGuard)
-  @Patch('promoteToAdmin')
-  async promoteToAdmin(@Req() req: Request) {
-    return this.userService.promoteToAdmin(req['user']);
-  }
-
   @Delete(':id')
   async delete(@Param('id') id: string) {
     return this.userService.delete(id);

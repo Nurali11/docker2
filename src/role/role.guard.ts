@@ -26,7 +26,7 @@ export class RoleGuard implements CanActivate {
     const userRole = request['role'];
 
     if (!userRole) {
-      throw new UnauthorizedException('User role not found in request');
+      throw new UnauthorizedException('Role not found');
     }
 
     if (KerakliRollar.some((role) => role === userRole)) {
